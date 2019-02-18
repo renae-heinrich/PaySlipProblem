@@ -89,21 +89,21 @@ public class Main {
             System.exit(8);
         }
 
-            System.out.print("Please enter your super rate: ");
-            double superRate = Double.parseDouble(scanner.nextLine());
-            System.out.print("Please enter your payment start date: ");
-            String startDate = scanner.nextLine();
-            System.out.print("Please enter your payment end date: ");
-            String endDate = scanner.nextLine();
+        System.out.print("Please enter your super rate: ");
+        double superRate = Double.parseDouble(scanner.nextLine());
+        System.out.print("Please enter your payment start date: ");
+        String startDate = scanner.nextLine();
+        System.out.print("Please enter your payment end date: ");
+        String endDate = scanner.nextLine();
 
-            String fullName = firstName + " " + surname;
+        String fullName = firstName + " " + surname;
 
-            BigDecimal grossIncome = BigDecimal.valueOf(annualSalary / 12).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal grossIncome = BigDecimal.valueOf(annualSalary / 12).setScale(0, RoundingMode.HALF_UP);
 
 
-            System.out.print("\nYour payslip has been generated:\n\nName: " + fullName + "\nPay Period: " + startDate + " - " + endDate + "\nGross Income: " + grossIncome + "\n");
+        System.out.print("\nYour payslip has been generated:\n\nName: " + fullName + "\nPay Period: " + startDate + " - " + endDate + "\nGross Income: " + grossIncome + "\n");
 
-    // want to put into function - need help
+        // want to put into function - need help
         BigDecimal incomeTax, netIncome;
         if (annualSalary >= 0 && annualSalary <= 18200) {
             incomeTax = new BigDecimal(0);
@@ -126,9 +126,7 @@ public class Main {
 
         System.out.println("Net Income: " + netIncome);
 
-        BigDecimal superannuation;
-
-        superannuation = new BigDecimal(superRate/100).multiply(grossIncome).setScale(0, RoundingMode.HALF_UP);
+        BigDecimal superannuation = new BigDecimal(superRate/100).multiply(grossIncome).setScale(0, RoundingMode.HALF_UP);
 
         System.out.println("Super: " + superannuation + "\n\nThank you for using MYOB!\n~~~");
 
@@ -139,7 +137,7 @@ public class Main {
 
 
 
-      // trying to put into function - not working (is return statement wrong??)
+    // trying to put into function - not working (is return statement wrong??)
 //    public static int incomeTaxCalc(double annualSalary) {
 //        BigDecimal incomeTax;
 //        if (annualSalary >= 0 && annualSalary <= 18200) {
@@ -163,4 +161,4 @@ public class Main {
 //    }
 
 
-    }
+}
