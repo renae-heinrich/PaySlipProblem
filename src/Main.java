@@ -79,38 +79,88 @@ public class Main {
         String surname = scanner.nextLine();
         System.out.print("Please enter your annual salary: ");
         double annualSalary = Double.parseDouble(scanner.nextLine());
-        System.out.print("Please enter your super rate: ");
-        double superRate = Double.parseDouble(scanner.nextLine());
-        System.out.print("Please enter your payment start date: ");
-        String startDate = scanner.nextLine();
-        System.out.print("PLease enter your payment end date: ");
-        String endDate = scanner.nextLine();
 
-        String fullName = firstName + surname;
+        try {
+            if (annualSalary <= 0) {
+                throw new Exception("Annual salary must be greater than 0. Received: " + annualSalary);
+            }
+        } catch (Exception e){
+            System.out.print(e.getMessage());
+            System.exit(8);
+        }
 
-        BigDecimal grossIncome = BigDecimal.valueOf(annualSalary/12).setScale(0, RoundingMode.HALF_UP);
+            System.out.print("Please enter your super rate: ");
+            double superRate = Double.parseDouble(scanner.nextLine());
+            System.out.print("Please enter your payment start date: ");
+            String startDate = scanner.nextLine();
+            System.out.print("Please enter your payment end date: ");
+            String endDate = scanner.nextLine();
+
+            String fullName = firstName + " " + surname;
+
+            BigDecimal grossIncome = BigDecimal.valueOf(annualSalary / 12).setScale(0, RoundingMode.HALF_UP);
 
 
-        if (annualSalary >= 0 && annualSalary <= 18200){
-            int incomeTax = 0;
+            System.out.print("Your payslip has been generated:\n\nName: " + fullName + "\nPay Period: " + startDate + " - " + endDate + "\nGross Income: " + grossIncome + "\n");
+
+    // want to put into function - need help
+        BigDecimal incomeTax, netIncome;
+        if (annualSalary >= 0 && annualSalary <= 18200) {
+            incomeTax = new BigDecimal(0);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (annualSalary >= 18201 && annualSalary <= 37000){
-            BigDecimal incomeTax = BigDecimal.valueOf(((annualSalary - 18200) * 0.19)/12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= 18201 && annualSalary <= 37000) {
+            incomeTax = BigDecimal.valueOf(((annualSalary - 18200) * 0.19) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax: " + incomeTax);
         } else if (annualSalary >= 37001 && annualSalary <= 87000) {
-            BigDecimal incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - 37000) * 0.325))/12).setScale(0, RoundingMode.HALF_UP);
+            incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - 37000) * 0.325)) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (annualSalary >= 87001 && annualSalary <= 180000){
-            BigDecimal incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - 87000) * 0.37))/12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= 87001 && annualSalary <= 180000) {
+            incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - 87000) * 0.37)) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax " + incomeTax);
         } else {
-            BigDecimal incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
+            incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax " + incomeTax);
         }
+
+        netIncome = grossIncome.subtract(incomeTax);
+
+        System.out.println("Net Income: " + netIncome);
+
+        BigDecimal superannuation;
+
+        superannuation = new BigDecimal(superRate/100).multiply(grossIncome).setScale(0, RoundingMode.HALF_UP);
+
+        System.out.println("Super: " + superannuation);
+
+
+
+
     }
 
 
 
+      // trying to put into function - not working (is return statement wrong??)
+//    public static int incomeTaxCalc(double annualSalary) {
+//        BigDecimal incomeTax;
+//        if (annualSalary >= 0 && annualSalary <= 18200) {
+//            incomeTax = 0;
+//            System.out.println("Income Tax: " + incomeTax);
+//        } else if (annualSalary >= 18201 && annualSalary <= 37000) {
+//            incomeTax = BigDecimal.valueOf(((annualSalary - 18200) * 0.19) / 12).setScale(0, RoundingMode.HALF_UP);
+//            System.out.println("Income Tax: " + incomeTax);
+//        } else if (annualSalary >= 37001 && annualSalary <= 87000) {
+//            incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - 37000) * 0.325)) / 12).setScale(0, RoundingMode.HALF_UP);
+//            System.out.println("Income Tax: " + incomeTax);
+//        } else if (annualSalary >= 87001 && annualSalary <= 180000) {
+//            incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - 87000) * 0.37)) / 12).setScale(0, RoundingMode.HALF_UP);
+//            System.out.println("Income Tax " + incomeTax);
+//        } else {
+//            incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
+//            System.out.println("Income Tax " + incomeTax);
+//        }
+//
+//        return incomeTax;
+//    }
 
-}
 
+    }
