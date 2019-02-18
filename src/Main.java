@@ -66,31 +66,51 @@
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
-        double grossIncome = 600050;
 
-        System.out.println(grossIncome);
+        System.out.print("~~~\nWelcome to the payslip generator!\nPlease input your first name: ");
+        Scanner scanner = new Scanner(System.in);
+        String firstName = scanner.nextLine();
+        System.out.print("Please input your surname: ");
+        String surname = scanner.nextLine();
+        System.out.print("Please enter your annual salary: ");
+        double annualSalary = Double.parseDouble(scanner.nextLine());
+        System.out.print("Please enter your super rate: ");
+        double superRate = Double.parseDouble(scanner.nextLine());
+        System.out.print("Please enter your payment start date: ");
+        String startDate = scanner.nextLine();
+        System.out.print("PLease enter your payment end date: ");
+        String endDate = scanner.nextLine();
 
-        if (grossIncome >= 0 && grossIncome <= 18200){
+        String fullName = firstName + surname;
+
+        BigDecimal grossIncome = BigDecimal.valueOf(annualSalary/12).setScale(0, RoundingMode.HALF_UP);
+
+
+        if (annualSalary >= 0 && annualSalary <= 18200){
             int incomeTax = 0;
             System.out.println("Income Tax: " + incomeTax);
-        } else if (grossIncome >= 18201 && grossIncome <= 37000){
-            BigDecimal incomeTax = BigDecimal.valueOf(((grossIncome - 18200) * 0.19)/12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= 18201 && annualSalary <= 37000){
+            BigDecimal incomeTax = BigDecimal.valueOf(((annualSalary - 18200) * 0.19)/12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (grossIncome >= 37001 && grossIncome <= 87000) {
-            BigDecimal incomeTax = BigDecimal.valueOf((3572 + ((grossIncome - 37000) * 0.325))/12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= 37001 && annualSalary <= 87000) {
+            BigDecimal incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - 37000) * 0.325))/12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (grossIncome >= 87001 && grossIncome <= 180000){
-            BigDecimal incomeTax = BigDecimal.valueOf((19822 + ((grossIncome - 87000) * 0.37))/12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= 87001 && annualSalary <= 180000){
+            BigDecimal incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - 87000) * 0.37))/12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax " + incomeTax);
         } else {
-            BigDecimal incomeTax = BigDecimal.valueOf((54232 + ((grossIncome - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
+            BigDecimal incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax " + incomeTax);
         }
     }
 
 
+
+
 }
+
