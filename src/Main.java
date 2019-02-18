@@ -72,7 +72,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        System.out.print("~~~\nWelcome to the payslip generator!\nPlease input your first name: ");
+        System.out.print("~~~\nWelcome to the payslip generator!\n\nPlease input your first name: ");
         Scanner scanner = new Scanner(System.in);
         String firstName = scanner.nextLine();
         System.out.print("Please input your surname: ");
@@ -101,7 +101,7 @@ public class Main {
             BigDecimal grossIncome = BigDecimal.valueOf(annualSalary / 12).setScale(0, RoundingMode.HALF_UP);
 
 
-            System.out.print("Your payslip has been generated:\n\nName: " + fullName + "\nPay Period: " + startDate + " - " + endDate + "\nGross Income: " + grossIncome + "\n");
+            System.out.print("\nYour payslip has been generated:\n\nName: " + fullName + "\nPay Period: " + startDate + " - " + endDate + "\nGross Income: " + grossIncome + "\n");
 
     // want to put into function - need help
         BigDecimal incomeTax, netIncome;
@@ -130,7 +130,7 @@ public class Main {
 
         superannuation = new BigDecimal(superRate/100).multiply(grossIncome).setScale(0, RoundingMode.HALF_UP);
 
-        System.out.println("Super: " + superannuation);
+        System.out.println("Super: " + superannuation + "\n\nThank you for using MYOB!\n~~~");
 
 
 
