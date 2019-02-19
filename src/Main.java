@@ -64,64 +64,80 @@
 //        Thank you for using MYOB!
 //        ~~~
 
+import models.Employee;
+import models.TaxBracket;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Scanner;
 
+
 public class Main {
 
-    public static void main(String[] args) {
 
-        System.out.print("~~~\nWelcome to the payslip generator!\n\nPlease input your first name: ");
+    public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        System.out.println("~~~\nWelcome to the payslip generator!\n\n");
+
+        System.out.print("Please input your first name: ");
         String firstName = scanner.nextLine();
+
         System.out.print("Please input your surname: ");
         String surname = scanner.nextLine();
+
         System.out.print("Please enter your annual salary: ");
         double annualSalary = Double.parseDouble(scanner.nextLine());
 
-        try {
-            if (annualSalary <= 0) {
-                throw new Exception("Annual salary must be greater than 0. Received: " + annualSalary);
-            }
-        } catch (Exception e){
-            System.out.print(e.getMessage());
-            System.exit(8);
-        }
-
         System.out.print("Please enter your super rate: ");
         double superRate = Double.parseDouble(scanner.nextLine());
+
         System.out.print("Please enter your payment start date: ");
         String startDate = scanner.nextLine();
+
         System.out.print("Please enter your payment end date: ");
         String endDate = scanner.nextLine();
 
-        String fullName = firstName + " " + surname;
+        Employee employee1 = new Employee(firstName, surname, annualSalary, superRate, startDate, endDate);
 
-        BigDecimal grossIncome = BigDecimal.valueOf(annualSalary / 12).setScale(0, RoundingMode.HALF_UP);
+        TaxBracket taxBracket1 = new TaxBracket(0, 18200, 0);
+        TaxBracket taxBracket2 = new TaxBracket(18201, 37000, 0.19);
+        TaxBracket taxBracket3 = new TaxBracket(37001, 87000, 0.325);
+        TaxBracket taxBracket4 = new TaxBracket(87001, 180000, 0.37);
+        TaxBracket taxBracket5 = new TaxBracket(180001, 1000000000, 0.45); //not sure how to write > than 180001
+
+        BigDecimal grossIncome = BigDecimal.valueOf(annualSalary/12).setScale(0, RoundingMode.HALF_UP);
 
 
-        System.out.print("\nYour payslip has been generated:\n\nName: " + fullName + "\nPay Period: " + startDate + " - " + endDate + "\nGross Income: " + grossIncome + "\n");
+        System.out.print("\n" +
+                "Your payslip has been generated:\n" +
+                "\n" +
+                "Name: " + employee1.getFirstName() + employee1.getSurname() +
+                "\nPay Period: " + employee1.getStartDate() + " - " + employee1.getEndDate() +
+                "\nGross Income: " + grossIncome + "\n");
 
         // want to put into function - need help
+
         BigDecimal incomeTax, netIncome;
-        if (annualSalary >= 0 && annualSalary <= 18200) {
+        
+        if (annualSalary >= taxBracket1.getLowTaxBracket() && annualSalary <= taxBracket1.getHighTaxBracket()) {
             incomeTax = new BigDecimal(0);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (annualSalary >= 18201 && annualSalary <= 37000) {
-            incomeTax = BigDecimal.valueOf(((annualSalary - 18200) * 0.19) / 12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= taxBracket2.getLowTaxBracket() && annualSalary <= taxBracket2.getHighTaxBracket()) {
+            incomeTax = BigDecimal.valueOf(((annualSalary - taxBracket1.getHighTaxBracket()) * taxBracket2.getRate()) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (annualSalary >= 37001 && annualSalary <= 87000) {
-            incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - 37000) * 0.325)) / 12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= taxBracket3.getLowTaxBracket() && annualSalary <= taxBracket3.getHighTaxBracket()) {
+            incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - taxBracket2.getHighTaxBracket()) * taxBracket3.getRate())) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax: " + incomeTax);
-        } else if (annualSalary >= 87001 && annualSalary <= 180000) {
-            incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - 87000) * 0.37)) / 12).setScale(0, RoundingMode.HALF_UP);
+        } else if (annualSalary >= taxBracket4.getLowTaxBracket() && annualSalary <= taxBracket4.getHighTaxBracket()) {
+            incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - taxBracket3.getHighTaxBracket()) * taxBracket4.getRate())) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax " + incomeTax);
         } else {
-            incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
+            incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - taxBracket4.getHighTaxBracket()) * taxBracket5.getRate())) / 12).setScale(0, RoundingMode.HALF_UP);
             System.out.println("Income Tax " + incomeTax);
         }
-
+        //define tax bracket class like employee
+        //BigDecimal deals with money
         netIncome = grossIncome.subtract(incomeTax);
 
         System.out.println("Net Income: " + netIncome);
@@ -132,33 +148,15 @@ public class Main {
 
 
 
+        }
+
+
+
+
 
     }
 
 
 
-    // trying to put into function - not working (is return statement wrong??)
-//    public static int incomeTaxCalc(double annualSalary) {
-//        BigDecimal incomeTax;
-//        if (annualSalary >= 0 && annualSalary <= 18200) {
-//            incomeTax = 0;
-//            System.out.println("Income Tax: " + incomeTax);
-//        } else if (annualSalary >= 18201 && annualSalary <= 37000) {
-//            incomeTax = BigDecimal.valueOf(((annualSalary - 18200) * 0.19) / 12).setScale(0, RoundingMode.HALF_UP);
-//            System.out.println("Income Tax: " + incomeTax);
-//        } else if (annualSalary >= 37001 && annualSalary <= 87000) {
-//            incomeTax = BigDecimal.valueOf((3572 + ((annualSalary - 37000) * 0.325)) / 12).setScale(0, RoundingMode.HALF_UP);
-//            System.out.println("Income Tax: " + incomeTax);
-//        } else if (annualSalary >= 87001 && annualSalary <= 180000) {
-//            incomeTax = BigDecimal.valueOf((19822 + ((annualSalary - 87000) * 0.37)) / 12).setScale(0, RoundingMode.HALF_UP);
-//            System.out.println("Income Tax " + incomeTax);
-//        } else {
-//            incomeTax = BigDecimal.valueOf((54232 + ((annualSalary - 180000) * 0.45)) / 12).setScale(0, RoundingMode.HALF_UP);
-//            System.out.println("Income Tax " + incomeTax);
-//        }
-//
-//        return incomeTax;
-//    }
 
 
-}
