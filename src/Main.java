@@ -104,7 +104,7 @@ public class Main {
         TaxBracket taxBracket2 = new TaxBracket(18201, 37000, 0.19);
         TaxBracket taxBracket3 = new TaxBracket(37001, 87000, 0.325);
         TaxBracket taxBracket4 = new TaxBracket(87001, 180000, 0.37);
-        TaxBracket taxBracket5 = new TaxBracket(180001, Double.POSITIVE_INFINITY, 0.45); 
+        TaxBracket taxBracket5 = new TaxBracket(180001, Double.POSITIVE_INFINITY, 0.45);
 
         BigDecimal grossIncome = BigDecimal.valueOf(annualSalary/12).setScale(0, RoundingMode.HALF_UP);
 
